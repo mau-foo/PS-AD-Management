@@ -1,6 +1,9 @@
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
+# Variable to hold a list of ad groups
+$ad_groups = Get-Content ad_groups.txt
+
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'Select whether to add or remove users or both.'
 $form.Size = New-Object System.Drawing.Size(450,200)
@@ -53,9 +56,10 @@ if ($result -eq [System.Windows.Forms.DialogResult]::OK)
 $form.Text = 'Select AD group.'
 $listBox.Items.Clear()
 
-[void] $listBox.Items.Add("Internal Audit - Full")
-[void] $listBox.Items.Add("Okta TeamMate (PROD)")
-[void] $listBox.Items.Add("Okta TeamMate (DEV)")
+foreach ($group in $ad_groups)
+{
+    [void] $listBox.Items.Add($group)
+}
 
 $result = $form.ShowDialog()
 
